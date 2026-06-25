@@ -389,15 +389,23 @@
 
 <script>
   let currentItem = null;
+  let itemPool    = []; // 取得済み商品プール
 
   function setLoading(on) {
     const btn = document.getElementById('fetch-btn');
     btn.disabled = on;
-    btn.textContent = on ? '⏳ 取得中...' : '🏆 家電ランキング上位（¥20,000以上）を取得';
+    btn.textContent = on ? '⏳ 取得中...' : '🔀 別の商品を表示';
   }
 
   async function fetchRanking() {
     const status = document.getElementById('status');
+
+    // プールに商品があればAPIを叩かずランダム表示
+    if (itemPool.length > 0) {
+      pickRandom();
+      return;
+    }
+
     setLoading(true);
     status.textContent = '楽天APIにアクセスしています...';
     status.className = 'status';
@@ -426,10 +434,20 @@
       return;
     }
 
-    currentItem = data.Items[0].Item ?? data.Items[0];
+    // 全件プールに保存してランダム表示
+    itemPool = data.Items.map(i => i.Item ?? i);
+    pickRandom();
+  }
+
+  function pickRandom() {
+    const idx = Math.floor(Math.random() * itemPool.length);
+    currentItem = itemPool[idx];
     renderProduct(currentItem);
     renderPost(currentItem);
-    document.getElementById('status').textContent = '✅ 取得完了！投稿文を確認・編集してください。';
+    const btn = document.getElementById('fetch-btn');
+    btn.disabled = false;
+    btn.textContent = '🔀 別の商品を表示';
+    document.getElementById('status').textContent = `✅ ${itemPool.length}件中からランダム表示中。ボタンで切り替えられます。`;
   }
 
   function renderProduct(item) {
