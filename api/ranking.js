@@ -1,7 +1,7 @@
-const APP_ID   = '0a20b387-b2e2-42b3-83d4-276e265b0abf';
+const APP_ID     = '0a20b387-b2e2-42b3-83d4-276e265b0abf';
 const ACCESS_KEY = 'pk_S6uhk1yZKJh6F4h6IBnkhQ8kjUXU6VNFfTSO3QM65V9';
-const AFF_ID   = '536bbf3d.7c674743.536bbf3e.d20abd20';
-const ENDPOINT = 'https://openapi.rakuten.co.jp/ichibams/api/IchibaItem/Search/20220601';
+const AFF_ID     = '536bbf3d.7c674743.536bbf3e.d20abd20';
+const ENDPOINT   = 'https://openapi.rakuten.co.jp/ichibams/api/IchibaItem/Search/20220601';
 
 const MIN_PRICE = 20000;
 
@@ -14,7 +14,7 @@ export default async function handler(req, res) {
     affiliateId:   AFF_ID,
     keyword:       '家電',
     minPrice:      MIN_PRICE,
-    hits:          10,
+    hits:          30,
     sort:          '-reviewCount',
     format:        'json',
   });
